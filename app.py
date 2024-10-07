@@ -1,7 +1,8 @@
 from flask import Flask, request
 
 import telebot
-from bot import bot, TOKEN
+from bot import bot
+from config import TOKEN
 
 
 app = Flask(__name__)

@@ -96,8 +96,5 @@ if __name__ == "__main__":
             bot.set_webhook(url=f'https://{PROJECT_NAME}/' + TOKEN)
             return "!", 200
 
-
-        app.run(host="0.0.0.0", port=443, ssl_context=('cert.pem', 'key.pem'))
-
     else:
         bot.polling(none_stop=True)

@@ -73,28 +73,33 @@ from utils.finish_giveaway import *
 
 app = Flask(__name__)
 
+if "WEBHOOKS" in list(os.environ.keys()):
+    PROJECT_NAME = "zhiliuk.pythonanywhere.com"
+
+    thread = threading.Thread(target=check_giveaways_end_datetime)
+    thread.daemon = True
+    thread.start()
+
+
+    @app.route('/' + TOKEN, methods=['POST'])
+    def getMessage():
+        json_string = request.get_data().decode('utf-8')
+        update = telebot.types.Update.de_json(json_string)
+        bot.process_new_updates([update])
+        return "!", 200
+
+
+    @app.route("/")
+    def webhook():
+        bot.remove_webhook()
+        bot.set_webhook(url=f'https://{PROJECT_NAME}/' + TOKEN)
+        return "!", 200
+
+
 if __name__ == "__main__":
 
     thread = threading.Thread(target=check_giveaways_end_datetime)
     thread.daemon = True
     thread.start()
 
-    if "WEBHOOKS" in list(os.environ.keys()):
-        PROJECT_NAME = "zhiliuk.pythonanywhere.com"
-
-        @app.route('/' + TOKEN, methods=['POST'])
-        def getMessage():
-            json_string = request.get_data().decode('utf-8')
-            update = telebot.types.Update.de_json(json_string)
-            bot.process_new_updates([update])
-            return "!", 200
-
-
-        @app.route("/")
-        def webhook():
-            bot.remove_webhook()
-            bot.set_webhook(url=f'https://{PROJECT_NAME}/' + TOKEN)
-            return "!", 200
-
-    else:
-        bot.polling(none_stop=True)
+    bot.polling(none_stop=True)

@@ -22,3 +22,6 @@ def register_participant(giveaway_id: int, message: Message):
                 f"Пользователь {message.from_user.id} {message.from_user.username} зарегистрировался в розыгрыше {giveaway_id} ")
         except IntegrityError:
             raise RepeatedRegistrationError
+        except:
+            bot_logger.info(
+                f"У пользователя {message.from_user.id} {message.from_user.username} произошла ошибка при регистрации в розыгрыше ")

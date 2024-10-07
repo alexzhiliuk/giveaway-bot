@@ -2,6 +2,7 @@ import re
 import telebot
 
 from bot import bot
+from exceptions import GiveawayNotFound
 
 from keyboards.admin.giveaways import *
 from utils.giveaways_view import get_giveaway_summary, get_giveaway_winners, delete_giveaway
@@ -17,7 +18,14 @@ def giveaways_view(data: telebot.types.CallbackQuery):
 @bot.callback_query_handler(func=lambda data: re.fullmatch(r"giveaway_view_\d+", data.data))
 def giveaway_view(data: telebot.types.CallbackQuery):
     giveaway_id = int(data.data.split("_")[-1])
-    giveaway_summary = get_giveaway_summary(giveaway_id)
+
+    try:
+        giveaway_summary = get_giveaway_summary(giveaway_id)
+    except GiveawayNotFound:
+        bot.edit_message_text(
+            "Розыгрыши:", data.from_user.id, data.message.id, reply_markup=kb_all_giveaways()
+        )
+        return
 
     answer = f"""<b>Статус</b>: {statuses[giveaway_summary['status']]}
     

@@ -44,6 +44,9 @@ def start(message: telebot.types.Message):
                 bot_logger.info(f"Пользователь {message.from_user.id} попытался зарегистрироватсья в розыгрыше повторно {giveaway_id}")
                 bot.send_message(message.from_user.id, "Вы уже зарегистрированы в данном розыгрыше")
                 return
+            except:
+                bot.send_message(message.from_user.id, "Упс, что-то пошло не так")
+                return
 
             bot.send_message(message.from_user.id, "Вы зарегистрированы в конкурсе!")
             return

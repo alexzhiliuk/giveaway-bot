@@ -1,5 +1,6 @@
 from database import Database
 from config import DB_NAME
+from exceptions import GiveawayNotFound
 from logger import bot_logger
 
 
@@ -12,10 +13,14 @@ def get_giveaways_for_kb():
 
 def get_giveaway_summary(giveaway_id: int):
     with Database(DB_NAME) as db:
-        giveaway_summary = db.select(
-            "SELECT id, text, winners_count, message_for_winner, message_for_others, end_datetime, status FROM giveaway WHERE id = ?",
-            (giveaway_id, )
-        )[0]
+        try:
+            giveaway_summary = db.select(
+                "SELECT id, text, winners_count, message_for_winner, message_for_others, end_datetime, status FROM giveaway WHERE id = ?",
+                (giveaway_id, )
+            )[0]
+        except IndexError:
+            raise GiveawayNotFound
+
         return {
             "id": giveaway_summary[0],
             "text": giveaway_summary[1],

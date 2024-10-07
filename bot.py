@@ -10,8 +10,6 @@ from keyboards.admin import kb_admin_menu
 from exceptions.join_to_giveaway import *
 from logger import bot_logger
 
-from flask import Flask, request
-
 
 if not TOKEN:
     bot_logger.info("Нет токена")
@@ -69,25 +67,6 @@ def menu(message: telebot.types.Message):
 
 from handlers.admin import *
 from utils.finish_giveaway import *
-
-
-app = Flask(__name__)
-
-PROJECT_NAME = "zhiliuk.pythonanywhere.com"
-
-@app.route('/' + TOKEN, methods=['POST'])
-def getMessage():
-    json_string = request.get_data().decode('utf-8')
-    update = telebot.types.Update.de_json(json_string)
-    bot.process_new_updates([update])
-    return "!", 200
-
-
-@app.route("/")
-def webhook():
-    bot.remove_webhook()
-    bot.set_webhook(url=f'https://{PROJECT_NAME}/' + TOKEN)
-    return "!", 200
 
 
 if __name__ == "__main__":

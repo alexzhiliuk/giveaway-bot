@@ -39,12 +39,8 @@ def my_task():
 
 def set_interval(timer, task):
     is_stop = task()
-    try:
-        if not is_stop:
-            Timer(timer, set_interval, [timer, task]).start()
-        bot.send_message(625855750, "end interval")
-    except:
-        bot.send_message(625855750, "end interval error")
+    if not is_stop:
+        Timer(timer, set_interval, [timer, task]).start()
 
 
 if __name__ == "__main__":

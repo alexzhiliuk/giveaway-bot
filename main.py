@@ -1,7 +1,7 @@
 import re
 from datetime import timedelta, datetime as dt
 import logging
-import threading
+from threading import Timer
 from config import *
 
 import telebot
@@ -62,10 +62,20 @@ def menu(message: telebot.types.Message):
 from handlers.admin import *
 from utils.finish_giveaway import *
 
+
+def my_task():
+    check_giveaways_end_datetime()
+    return False
+
+
+def set_interval(timer, task):
+    is_stop = task()
+    if not is_stop:
+        Timer(timer, set_interval, [timer, task]).start()
+
+
 if __name__ == "__main__":
 
-    thread = threading.Thread(target=check_giveaways_end_datetime)
-    thread.daemon = True
-    thread.start()
+    set_interval(30, my_task)
 
     bot.polling(none_stop=True)

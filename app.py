@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request
 
 import telebot
@@ -10,7 +11,7 @@ from utils.finish_giveaway import check_giveaways_end_datetime
 
 app = Flask(__name__)
 
-PROJECT_NAME = "zhiliuk.pythonanywhere.com"
+BASE_URL = os.environ.get('BASE_URL', 80)
 
 
 @app.route('/' + TOKEN, methods=['POST'])
@@ -24,7 +25,7 @@ def getMessage():
 @app.route("/")
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url=f'https://{PROJECT_NAME}/' + TOKEN)
+    bot.set_webhook(url=f'{BASE_URL}/' + TOKEN)
     return "!", 200
 
 
@@ -46,4 +47,7 @@ def set_interval(timer, task):
         bot.send_message(625855750, "end interval error")
 
 
-set_interval(30, my_task)
+if __name__ == "__main__":
+    set_interval(30, my_task)
+
+    app.run(host="0.0.0.0", port=int(os.environ.get('PORT', 80)))

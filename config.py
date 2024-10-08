@@ -1,9 +1,9 @@
 import os
 
-ADMIN_PASS = "123"
-TOKEN = os.environ.get("TOKEN", "7529550247:AAFO1nwK2LPWGZl94EqLuPiUfMkOoBAKnog")
-DB_NAME = "/home/zhiliuk/gw-bot/db.sqlite3"
-CHANNEL_ID = -1002269031953
+ADMIN_PASS = os.environ.get("ADMIN_PASS", "123")
+TOKEN = os.environ.get("TOKEN")
+DB_NAME = os.environ.get("DB_NAME")
+CHANNEL_ID = os.environ.get("CHANNEL_ID", -1002269031953)
 
-ADMIN_START_MESSAGE = "Розыгрыши:"
-USER_START_MESSAGE = "Привет! Этот бот пришлет тебе результаты розыгрыша"
+ADMIN_START_MESSAGE = os.environ.get("DB_NAME", "Розыгрыши:")
+USER_START_MESSAGE = os.environ.get("DB_NAME", "Привет! Этот бот пришлет тебе результаты розыгрыша")

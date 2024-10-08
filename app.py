@@ -28,6 +28,9 @@ def webhook():
     return "!", 200
 
 
+from main import start, menu
+
+
 def my_task():
     check_giveaways_end_datetime()
     return False

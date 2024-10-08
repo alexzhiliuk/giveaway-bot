@@ -62,7 +62,6 @@ def menu(message: telebot.types.Message):
 from handlers.admin import *
 from utils.finish_giveaway import *
 
-
 if __name__ == "__main__":
 
     thread = threading.Thread(target=check_giveaways_end_datetime)

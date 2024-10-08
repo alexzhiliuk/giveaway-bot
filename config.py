@@ -1,8 +1,8 @@
 import os
 
 ADMIN_PASS = "123"
-TOKEN = os.environ.get("TOKEN")
-DB_NAME = "db.sqlite3"
+TOKEN = os.environ.get("TOKEN", "7529550247:AAFO1nwK2LPWGZl94EqLuPiUfMkOoBAKnog")
+DB_NAME = "/home/zhiliuk/gw-bot/db.sqlite3"
 CHANNEL_ID = -1002269031953
 
 ADMIN_START_MESSAGE = "Розыгрыши:"

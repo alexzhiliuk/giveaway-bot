@@ -85,17 +85,15 @@ def finish_giveaway(
 
 
 def check_giveaways_end_datetime():
-    while True:
+    with Database(DB_NAME) as db:
+        running_giveaways = db.select("SELECT "
+                                      "id, end_datetime, name, winners_count, message_for_winner, message_for_others "
+                                      "FROM giveaway WHERE status = 'RUN'")
 
-        with Database(DB_NAME) as db:
-            running_giveaways = db.select("SELECT "
-                                          "id, end_datetime, name, winners_count, message_for_winner, message_for_others "
-                                          "FROM giveaway WHERE status = 'RUN'")
+        for running_giveaway in running_giveaways:
+            end_datetime = dt.strptime(running_giveaway[1], "%Y-%m-%d %H:%M:%S")
 
-            for running_giveaway in running_giveaways:
-                end_datetime = dt.strptime(running_giveaway[1], "%Y-%m-%d %H:%M:%S")
+            if dt.now() > end_datetime:
+                finish_giveaway(running_giveaway[0], running_giveaway[2], running_giveaway[3], running_giveaway[4], running_giveaway[5])
 
-                if dt.now() > end_datetime:
-                    finish_giveaway(running_giveaway[0], running_giveaway[2], running_giveaway[3], running_giveaway[4], running_giveaway[5])
 
-        time.sleep(30)

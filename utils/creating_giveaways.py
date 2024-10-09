@@ -1,4 +1,4 @@
-from datetime import timedelta, datetime as dt
+from datetime import datetime as dt
 
 from config import DB_NAME
 from database import Database
@@ -48,7 +48,6 @@ def update_giveaway_end_time(end_time, owner: int | str):
 
         giveaway_end_datetime = dt.strptime(giveaway_end_datetime[0], "%Y-%m-%d %H:%M:%S")
         giveaway_end_datetime = dt.combine(giveaway_end_datetime, end_time)
-        giveaway_end_datetime = giveaway_end_datetime - timedelta(hours=3)
 
         db.update(
             "UPDATE giveaway SET end_datetime = ? WHERE owner = ? AND status = 'CREATING'",

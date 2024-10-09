@@ -93,6 +93,7 @@ def check_giveaways_end_datetime():
         for running_giveaway in running_giveaways:
             end_datetime = dt.strptime(running_giveaway[1], "%Y-%m-%d %H:%M:%S")
 
+            print(f"{dt.now(UTC) + timedelta(hours=3)} {end_datetime}")
             if dt.now(UTC) + timedelta(hours=3) > end_datetime:
                 finish_giveaway(running_giveaway[0], running_giveaway[2], running_giveaway[3], running_giveaway[4], running_giveaway[5])
 

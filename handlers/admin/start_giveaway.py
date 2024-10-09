@@ -5,6 +5,7 @@ import telebot
 from bot import bot
 from config import ADMIN_START_MESSAGE
 from keyboards import kb_admin_menu
+from cancel.cancel import cancel
 
 from keyboards.admin.calendar import DialogCalendar
 from utils.creating_giveaways import *
@@ -28,6 +29,7 @@ def start_giveaway(data: telebot.types.CallbackQuery):
     bot.register_next_step_handler(send, input_giveaway_name)
 
 
+@cancel(bot=bot, cancel_message="Создание розыгрыша прекращено")
 def input_giveaway_name(message: telebot.types.Message):
     if message.content_type != "text":
         send = bot.send_message(message.from_user.id, "Введите название нового розыгрыша (только текст)")
@@ -38,6 +40,7 @@ def input_giveaway_name(message: telebot.types.Message):
     bot.register_next_step_handler(send, input_giveaway_text, {"name": message.text, "owner": message.from_user.id})
 
 
+@cancel(bot=bot, cancel_message="Создание розыгрыша прекращено")
 def input_giveaway_text(message: telebot.types.Message, giveaway_info: dict):
     if message.content_type != "text":
         send = bot.send_message(message.from_user.id, "Введите текст нового розыгрыша (только текст)")
@@ -49,6 +52,7 @@ def input_giveaway_text(message: telebot.types.Message, giveaway_info: dict):
     bot.register_next_step_handler(send, input_giveaway_winners_count, giveaway_info)
 
 
+@cancel(bot=bot, cancel_message="Создание розыгрыша прекращено")
 def input_giveaway_winners_count(message: telebot.types.Message, giveaway_info: dict):
     if message.content_type != "text" or not message.text.isnumeric():
         send = bot.send_message(message.from_user.id, "Введите количество победителей")
@@ -60,6 +64,7 @@ def input_giveaway_winners_count(message: telebot.types.Message, giveaway_info: 
     bot.register_next_step_handler(send, input_giveaway_message_for_winner, giveaway_info)
 
 
+@cancel(bot=bot, cancel_message="Создание розыгрыша прекращено")
 def input_giveaway_message_for_winner(message: telebot.types.Message, giveaway_info: dict):
     if message.content_type != "text":
         send = bot.send_message(message.from_user.id, "Введите сообщение для победителя (только текст)")
@@ -71,6 +76,7 @@ def input_giveaway_message_for_winner(message: telebot.types.Message, giveaway_i
     bot.register_next_step_handler(send, input_giveaway_message_for_others, giveaway_info)
 
 
+@cancel(bot=bot, cancel_message="Создание розыгрыша прекращено")
 def input_giveaway_message_for_others(message: telebot.types.Message, giveaway_info: dict):
     if message.content_type != "text":
         send = bot.send_message(message.from_user.id, "Введите сообщение для остальных участников (только текст)")
@@ -124,6 +130,7 @@ def set_date(data: telebot.types.CallbackQuery):
     bot.register_next_step_handler(send, input_giveaway_end_time)
 
 
+@cancel(bot=bot, cancel_message="Создание розыгрыша прекращено")
 def input_giveaway_end_time(message: telebot.types.Message):
     if message.content_type != "text" or not re.fullmatch(r"\d\d:\d\d", message.text.strip()):
         send = bot.send_message(message.from_user.id, "Введите время для окончания розыгрыша\nНапример: 19:00")
